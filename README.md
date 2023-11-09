@@ -9,8 +9,9 @@ The main tasks of this program are outlined below:
 6. An **i2c device (a joystick)** is integrated into the program by triggering a reading from a weather API
 
 The code for this project is running simultaneously on the **Pico**, the **computer**, and **OpenCV**.
-1. *OpenCV:** The OpenCV code has two components: identifying the primary color of an image, and posting the units that correspond to that color to Airtable.
-1. *Computer:** The computer uses Airtable's REST API to get the units posted there from OpenCV. It then publishes these units to the Adafruit dashboard using MQTT.
+1. *Pico:* The Pico performs several different tasks. It continuously checks Airtable to determine if the units have changed. If they have, a new temperature reading is found using the thermistor. The LEDs on the physical display are changed to show the temperature, and the servo is updated to indicate the correct units. The new temperature reading is published to Adafruit using their MQTT broker. The Pico is also continuously checking if the joystick buttons have been pressed. Each button corresponds to a different location and cause the weather of the corresponding location to be found from a weather API and posted to the Adafruit dashboard. An LED indicating which location was selected are also turned on.
+2. *OpenCV:* The OpenCV code has two components: identifying the primary color of an image, and posting the units that correspond to that color to Airtable.
+3. *Computer:* The computer uses Airtable's REST API to get the units posted there from OpenCV. It then publishes these units to the Adafruit dashboard using MQTT.
 
 The following libraries are used in the Pico code:
 - joystickButtons.py - This library sets up the i2c joystick and returns the name of the button that was clicked. Dpending on which button is clicked, the weather of one of four locations is found using an open weather API and posted to the Adafruit dashboard.
